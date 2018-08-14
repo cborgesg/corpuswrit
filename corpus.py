@@ -45,9 +45,7 @@ def get_boll(mensagem='Sim ou não?'):
             print("Resposta inválida, digite Sim ou Não!")
 
 
-def autor_init(autor=None,
-               trabalho=None,
-               numeracao=0):
+def autor_init(autor=None, trabalho=None, numeracao=0):
 
     # Inicializa lista com as possibilidades de autor:
 
@@ -86,11 +84,7 @@ def autor_init(autor=None,
     return autor, trabalho, numeracao
 
 
-def infoverbo(verbo=None,
-                   diatese=None,
-                   transitividade=None,
-                   copula=None,
-                   pessoal=None):
+def infoverbo(verbo=None, diatese=None, transitividade=None, copula=None, pessoal=None):
     """
     Recebe as informações sobre o verbo principal, checa a validade delas e as retorna
 
@@ -101,7 +95,7 @@ def infoverbo(verbo=None,
         print('Diátese não identificada.')
         diatese = input('Defina a diátese:\n' + str(diateses) + '\n')
 
-    transitividades = ['mono', 'bi', 'tri']
+    transitividades = ['intr', 'trans', 'bi']
 
     while transitividade not in transitividades:
         print('Transitividade não identificada.')
@@ -113,80 +107,204 @@ def infoverbo(verbo=None,
     if pessoal is None:
         pessoal = get_boll("O verbo é pessoal?")
 
-
     return verbo, diatese, transitividade, copula, pessoal
 
-def main(autor=False, trabalho=False, numeracao=False,
+
+def main(autor=None, trabalho=None, numeracao=None,
          atracao=None,
-         verboprincipal=False, diateseprin=False, transitividadeprin=False, copulaprim=False, pessoalprim=None,
+         verboprincipal=None, diateseprin=None, transitividadeprin=None, copulaprim=None, pessoalprim=None,
          verboinf=None, diateseinf=None, transitividadeinf=None, copulainf=None, pessoalinf=None,
          benalvo=None,
          adjunto=None,
-         distanciabenadj=0):
+         distanciabenadj=None):
 
     # Inicializa o documento corpus.tex
 
     corpus = open("corpus.tex", "a")
 
     # Inicializa prompt de de autor, trabalho e parágrafo
-    if not autor and not trabalho and not numeracao:
+    if autor is None and trabalho is None and numeracao is None:
         autor, trabalho, numeracao = autor_init(autor=input("Autor?\n"), trabalho=input("Trabalho?\n"))
     else:
         print("Entrada: " + autor + trabalho + numeracao + '\n')
         autor, trabalho, numeracao = autor_init(autor, trabalho, numeracao)
 
-    corpus.write("\\textbf{" + autor + trabalho + numeracao + '}\n')
-    corpus.write('\n\n')
 
     # Inicializa prompt de passagem e tradução
 
     passagem = input("Passagem em grego:\n")
     traducao = input("Tradução\n")
 
-    corpus.write(passagem + '\n\n' + traducao + '\n\n')
+    # Inicializa prompt de atração
 
     if atracao is None:
         atracao = get_boll('Há atração de caso?')
 
-    if atracao:
-        corpus.write('\\textbf{' + 'Atração}: ' + 'Sim' + '\n\n')
-    else:
-        corpus.write('\\textbf{' + 'Atração}: ' + 'Sim' + '\n\n')
 
-
-
-    ### Inicializa as informações morfológicas
+    # Inicializa as informações morfológicas
 
     # Verbo principal
-
-    if not verboprincipal and not diateseprin and not transitividadeprin and pessoalprim is None:
+    print("Verbo principal:")
+    if verboprincipal is None and\
+            diateseprin is None and \
+            transitividadeprin is None and \
+            pessoalprim is None and \
+            copulaprim is None:
         verboprincipal, \
-        diateseprin, \
-        transitividadeprin, \
-        copulaprim, \
-        pessoalprim = infoverbo(verbo=input("Verbo:\n"),
-                                diatese=input("Diátese:\n"),
-                                transitividade=input('Transitividade:\n'),
-                                copula=copulaprim)
+            diateseprin, \
+            transitividadeprin, \
+            copulaprim, \
+            pessoalprim = infoverbo(verbo=input("Verbo:\n"),
+                                    diatese=input("Diátese:\n"),
+                                    transitividade=input('Transitividade:\n'),
+                                    copula=copulaprim)
 
     else:
-        verboprincipal, diateseprin, transitividadeprin, copulaprim, pessoalprim = infoverbo(verbo=verboprincipal,
-                                                                                             diatese=diateseprin,
-                                                                                             transitividade=transitividadeprin,
-                                                                                             copula=copulaprim,
-                                                                                             pessoal=pessoalprim)
+        print(verboprincipal, diateseprin, transitividadeprin, str(copulaprim), str(pessoalprim))
+        verboprincipal, \
+            diateseprin, \
+            transitividadeprin,\
+            copulaprim,\
+            pessoalprim = infoverbo(verbo=verboprincipal,
+                                    diatese=diateseprin,
+                                    transitividade=transitividadeprin,
+                                    copula=copulaprim,
+                                    pessoal=pessoalprim)
+
+    # Verbo infinitivo
+    print("Verbo infinitivo")
+    if verboinf is None and\
+            diateseinf is None and\
+            transitividadeinf is None and\
+            pessoalinf is None and\
+            copulainf is None:
+        verboinf, \
+            diateseinf, \
+            transitividadeinf, \
+            copulainf, \
+            pessoalinf = infoverbo(verbo=input("Verbo:\n"),
+                                   diatese=input("Diátese:\n"),
+                                   transitividade=input('Transitividade:\n'),
+                                   copula=copulainf,
+                                   pessoal=pessoalinf)
+    else:
+        print(verboinf, diateseinf, transitividadeinf, str(copulainf), str(pessoalinf))
+        verboinf,\
+            diateseinf, \
+            transitividadeinf, \
+            copulainf, \
+            pessoalinf = infoverbo(verbo=verboinf,
+                                   diatese=diateseinf,
+                                   transitividade=transitividadeinf,
+                                   copula=copulainf,
+                                   pessoal=pessoalinf)
+
+    generos = ["masc.", "neutr.", "fem."]
+    numeros = ["sg.", "pl.", "du."]
+    benalvovalido = ['pronominal', 'adjetivo', 'substantivo']
+    if benalvo is None:
+        benalvo = dict()
+        benalvo.update({'forma': None, 'tipo': None, 'gênero': None, 'número': None})
+        benalvo['forma'] = input("Qual é o beneficiário?\n")
+        while benalvo['tipo'] not in benalvovalido:
+            benalvo['tipo'] = input("Qual é o tipo do beneficiário/alvo?\n" + str(benalvovalido) + "\n")
+        while benalvo['gênero'] not in generos:
+            benalvo['gênero'] = input("Qual é o gênero do beneficiário/alvo?\n" + str(generos) + "\n")
+        while benalvo['número'] not in numeros:
+            benalvo['número'] = input("Qual é o número do beneficiário/alvo?\n" + str(numeros) + '\n')
+
+    adjuntovalido = ['adjetivo', 'substantivo', 'particípio']
+    if adjunto is None:
+        adjunto = dict()
+        adjunto.update({'forma': None, 'tipo': None, 'gênero': None, 'número': None})
+        adjunto['forma'] = input("Qual é a forma do adjunto?\n")
+        while adjunto['tipo'] not in adjuntovalido:
+            adjunto['tipo'] = input("Qual é o tipo do adjunto?\n" + str(adjuntovalido) + "\n")
+        while adjunto['gênero'] not in generos:
+            adjunto['gênero'] = input("Qual é o gênero do adjunto?\n" + str(generos) + "\n")
+        while adjunto['número'] not in numeros:
+            adjunto['número'] = input("Qual é o número do adjunto?\n" + str(numeros) + '\n')
+
+    if distanciabenadj is None:
+        distanciabenadj = float(input("Qual a distância entre o ben-adj e o adjunto?\n"))
+
+    # Edita as informações abreviadas para maior clareza:
+
+    if diateseprin == 'atv':
+        diateseprin = 'Ativo'
+    elif diateseprin == 'mp':
+        diateseprin = 'Médio-passivo'
+    elif diateseprin == 'pass':
+        diateseprin = 'Passivo'
+
+    if transitividadeprin == 'intr':
+        transitividadeprin = 'Intransitivo'
+    elif transitividadeprin == 'trans':
+        transitividadeprin = 'Transitivo'
+    elif transitividadeprin == 'bi':
+        transitividadeprin = 'Bitransitivo'
+
+    if diateseinf == 'atv':
+        diateseinf = 'Ativo'
+    elif diateseinf == 'mp':
+        diateseinf = 'Médio-passivo'
+    elif diateseinf == 'pass':
+        diateseinf = 'Passivo'
+
+    if transitividadeinf == 'intr':
+        transitividadeinf = 'Intransitivo'
+    elif transitividadeinf == 'trans':
+        transitividadeinf = 'Transitivo'
+    elif transitividadeinf == 'bi':
+        transitividadeinf = 'Bitransitivo'
 
 
 
     # Imprime resumo das informações recolhidas
 
     print(autor + trabalho + numeracao)
-    print(atracao)
+    print('Atração: ' + str(atracao))
     print('Verbo principal:')
-    print(verboprincipal + 'Diátese: ' + diateseprin + ' Transitividade: ' + transitividadeprin + ' Pessoal: ' + str(pessoalprim))
+    print(verboprincipal + ' Diátese: ' + diateseprin + ' Transitividade: ' + transitividadeprin +
+          ' Pessoal: ' + str(pessoalprim))
+    print('Verbo infinitivo:')
+    print(verboinf + ' Diátese: ' + diateseinf + ' Transitividade: ' + transitividadeinf +
+          ' Pessoal: ' + str(pessoalprim))
+    print('Ben-alvo: ' + str(benalvo))
+    print('Adjunto:' + str(adjunto))
+    print('A distância entre ben-adj e adjunto é: ' + str(distanciabenadj) + ' palavras.')
+
+    # Escreve as informações no arquivo devidamente formatadas
+
+    # Identificação do texto
+
+    corpus.write("\\textbf{" + autor + trabalho + numeracao + '}\n\n')
+
+    # Passagem e tradução
+
+    corpus.write(passagem + '\n\n' + traducao + '\n\n')
+
+    # Atração:
+
+    if atracao:
+        corpus.write('\\textbf{' + 'Atração}: ' + 'Sim' + '\n\n')
+    else:
+        corpus.write('\\textbf{' + 'Atração}: ' + 'Sim' + '\n\n')
+
+    # Informações sobre o verbo principal
+
+    corpus.write("\\textbf{Verbo principal}:" + verboprincipal + " (" + diateseprin + ' ' + transitividadeprin + ")\n\n" )
+    corpus.write("\\textbf{Verbo infinitivo}:" + verboinf + " (" + diateseinf + ' ' + transitividadeinf + ")\n\n" )
 
     # Finaliza o documento corpus.tex
     corpus.close()
 
 
-main()
+# main()
+main(autor='xen', trabalho='Cyrop.', numeracao='1.1.1',
+     verboprincipal='exesti', diateseprin="atv", transitividadeprin='intr', copulaprim=True, pessoalprim=False,
+     verboinf='gignomai', diateseinf='mp', transitividadeinf='intr', copulainf=True, pessoalinf=True,
+     benalvo={'forma': 'soi', 'gênero': 'masc.', 'número': 'sg.', 'tipo': 'pronominal'},
+     adjunto={'forma': 'andri', 'gênero': 'masc.', 'número': 'sg.', 'tipo': 'substantivo'},
+     atracao=True)
+
