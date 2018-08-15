@@ -15,7 +15,7 @@ def main():
             trabalho = line[1]
             numeracao = line[2]
             passagem = line[3]
-            # corpus.main(autor=autor, numeracao=numeracao, passagem=passagem, trabalho=trabalho)
+            corpus.main(autor=autor, numeracao=numeracao, passagem=passagem, trabalho=trabalho)
     print(contador)
 
     bancodedados.close()
