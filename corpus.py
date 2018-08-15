@@ -1,3 +1,6 @@
+#!/usr/bin/env python
+# -*- coding: utf-8 -*-
+
 """
 
 Esse script abre um prompt no qual pede os parâmetros:
@@ -66,14 +69,15 @@ def autor_init(autor=None, trabalho=None, numeracao=0):
 
     if autor in autor_xen:
         autor = 'Xen.'
-        trabalhos = ['Cyrop.']
+        trabalhos = ['Cyrop.', 'Hell.', 'An.']
         while trabalho not in trabalhos:
             print('Trabalho não identificado\n')
             trabalho = input("Trabalho?\n" + str(trabalhos) + '\n')
 
     if autor in autor_plat:
         autor = 'Plat.'
-        trabalhos = ['Apol.']
+        trabalhos = ['Apol.', 'Phaedo', 'Phaedrus', 'Res.', 'Symp.', 'Laches',
+                     'Lysis', 'Menex.']
         while trabalho not in trabalhos:
             print('Trabalho não identificado\n')
             trabalho = input("Trabalho?\n" + str(trabalhos) + '\n')
@@ -112,6 +116,7 @@ def infoverbo(verbo=None, diatese=None, transitividade=None, copula=None, pessoa
 
 def main(autor=None, trabalho=None, numeracao=None,
          atracao=None,
+         passagem=None, traducao=None,
          verboprincipal=None, diateseprin=None, transitividadeprin=None, copulaprim=None, pessoalprim=None,
          verboinf=None, diateseinf=None, transitividadeinf=None, copulainf=None, pessoalinf=None,
          benalvo=None,
@@ -129,17 +134,16 @@ def main(autor=None, trabalho=None, numeracao=None,
         print("Entrada: " + autor + trabalho + numeracao + '\n')
         autor, trabalho, numeracao = autor_init(autor, trabalho, numeracao)
 
-
     # Inicializa prompt de passagem e tradução
-
-    passagem = input("Passagem em grego:\n")
-    traducao = input("Tradução\n")
+    if passagem is None:
+        passagem = input("Passagem em grego:\n")
+    if traducao is None:
+        traducao = input("Tradução\n")
 
     # Inicializa prompt de atração
 
     if atracao is None:
         atracao = get_boll('Há atração de caso?')
-
 
     # Inicializa as informações morfológicas
 
@@ -258,8 +262,6 @@ def main(autor=None, trabalho=None, numeracao=None,
     elif transitividadeinf == 'bi':
         transitividadeinf = 'Bitransitivo'
 
-
-
     # Imprime resumo das informações recolhidas
 
     print(autor + trabalho + numeracao)
@@ -293,18 +295,19 @@ def main(autor=None, trabalho=None, numeracao=None,
 
     # Informações sobre o verbo principal
 
-    corpus.write("\\textbf{Verbo principal}:" + verboprincipal + " (" + diateseprin + ' ' + transitividadeprin + ")\n\n" )
-    corpus.write("\\textbf{Verbo infinitivo}:" + verboinf + " (" + diateseinf + ' ' + transitividadeinf + ")\n\n" )
+    corpus.write("\\textbf{Verbo principal}:" + verboprincipal +
+                 " (" + diateseprin + ' ' + transitividadeprin + ")\n\n")
+    corpus.write("\\textbf{Verbo infinitvo}:" + verboinf + " (" + diateseinf + ' ' + transitividadeinf + ")\n\n")
 
     # Finaliza o documento corpus.tex
     corpus.close()
 
 
-# main()
-main(autor='xen', trabalho='Cyrop.', numeracao='1.1.1',
-     verboprincipal='exesti', diateseprin="atv", transitividadeprin='intr', copulaprim=True, pessoalprim=False,
-     verboinf='gignomai', diateseinf='mp', transitividadeinf='intr', copulainf=True, pessoalinf=True,
-     benalvo={'forma': 'soi', 'gênero': 'masc.', 'número': 'sg.', 'tipo': 'pronominal'},
-     adjunto={'forma': 'andri', 'gênero': 'masc.', 'número': 'sg.', 'tipo': 'substantivo'},
-     atracao=True)
-
+if __name__ == '__main__':
+    # main()
+    main(autor='xen', trabalho='Cyrop.', numeracao='1.1.1',
+         verboprincipal='exesti', diateseprin="atv", transitividadeprin='intr', copulaprim=True, pessoalprim=False,
+         verboinf='gignomai', diateseinf='mp', transitividadeinf='intr', copulainf=True, pessoalinf=True,
+         benalvo={'forma': 'soi', 'gênero': 'masc.', 'número': 'sg.', 'tipo': 'pronominal'},
+         adjunto={'forma': 'andri', 'gênero': 'masc.', 'número': 'sg.', 'tipo': 'substantivo'},
+         atracao=True)
