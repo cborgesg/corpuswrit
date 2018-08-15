@@ -137,6 +137,8 @@ def main(autor=None, trabalho=None, numeracao=None,
     # Inicializa prompt de passagem e tradução
     if passagem is None:
         passagem = input("Passagem em grego:\n")
+    else:
+        print(passagem)
     if traducao is None:
         traducao = input("Tradução\n")
 
