@@ -21,4 +21,5 @@ def main():
     bancodedados.close()
 
 
-main()
+if __name__ == '__main__':
+    main()
